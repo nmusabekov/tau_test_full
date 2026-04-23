@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAU2201 АБЖ (дәрістер бойынша қорытынды бақылау)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: 600;
+            background: linear-gradient(45deg, #f3a183, #e0c3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #e0c3fc;
+            font-size: 1.3em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #bbb;
+            font-size: 1em;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        input:focus,
+        select:focus {
+            border-color: #f3a183;
+            box-shadow: 0 0 15px rgba(243, 161, 131, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        select option {
+            background: #1a2a3a;
+            color: #fff;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+        }
+	.btn-primary {
+    	background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+   	 color: #fff;
+    	box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+	}
+	.btn-primary:hover {
+    	transform: translateY(-2px);
+    	box-shadow: 0 12px 30px rgba(76, 175, 80, 0.5);
+	}
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .timer {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #f3a183;
+            border: 2px solid #f3a183;
+            min-width: 100px;
+            text-align: center;
+        }
+        .timer.warning {
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        .progress {
+            color: #ccc;
+            font-size: 0.95em;
+        }
+        .question-block {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f3a183;
+        }
+        .question-text {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #fff;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .option-btn {
+            text-align: left;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 1em;
+            font-family: inherit;
+            width: 100%;
+        }
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #f3a183;
+            transform: translateX(5px);
+        }
+        .result-box {
+            text-align: center;
+            padding: 30px;
+        }
+        .result-score {
+            font-size: 4em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #f3a183, #e0c3fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+        }
+        .badge-easy {
+            background: #4caf50;
+            color: #fff;
+        }
+        .badge-medium {
+            background: #ff9800;
+            color: #fff;
+        }
+        .badge-hard {
+            background: #f44336;
+            color: #fff;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <!-- Экран регистрации -->
+        <div id="registerScreen">
+            <h1>📚 TAU2201 АБЖ (дәрістер бойынша қорытынды бақылау)</h1>
+            <div class="form-group">
+                <label for="fullName">Толық аты-жөніңіз (ФИО):</label>
+                <input type="text" id="fullName" placeholder="Мысалы: Ахметов Асқар Маратұлы">
+            </div>
+            <div class="form-group">
+                <label for="groupSelect">Топты таңдаңыз:</label>
+                <select id="groupSelect">
+                    <option value="">-- Топты таңдаңыз --</option>
+                    <option value="24-01а">24-01а</option>
+                    <option value="24-01б">24-01б</option>
+                    <option value="24-02а">24-02а</option>
+                    <option value="24-02б">24-02б</option>
+                    <option value="24-03а">24-03а</option>
+                    <option value="24-03б">24-03б</option>
+                    <option value="24-04б">24-04б</option>
+                    <option value="24-05а">24-05а</option>
+                    <option value="24-05б">24-05б</option>
+                    <option value="24-06а">24-06а</option>
+		    <option value="24-06а">24-06б</option>
+                    <option value="24-07а">24-07а</option>
+                    <option value="24-07б">24-07б</option>
+                </select>
+            </div>
+            <p style="font-size: 0.9em; color: #bbb; margin-bottom: 15px; text-align: center;">
+                ⚠️ Тест 25 сұрақтан тұрады (5 жеңіл, 10 орташа, 10 күрделі).<br>
+                Уақыт шектеуі: <strong>40 минут</strong>. Тек бір әрекет!
+            </p>
+            <button class="btn btn-primary" id="startBtn" onclick="startTest()">ТЕСТТІ БАСТАУ</button>
+            <p id="registerError" class="error"></p>
+        </div>
+
+        <!-- Экран теста -->
+        <div id="testScreen" class="hidden">
+            <div class="test-header">
+                <span class="progress" id="questionProgress">1 / 25</span>
+                <span class="timer" id="timerDisplay">40:00</span>
+            </div>
+            <div class="question-block">
+                <div class="question-text" id="questionText"></div>
+                <span class="difficulty-badge" id="difficultyBadge"></span>
+            </div>
+            <div class="options" id="optionsContainer"></div>
+            <p id="testError" class="error"></p>
+        </div>
+
+        <!-- Экран результатов -->
+        <div id="resultScreen" class="hidden">
+            <div class="result-box">
+                <h2>🎯 Тест аяқталды!</h2>
+                <p style="font-size: 1.1em;" id="resultName"></p>
+                <p style="color: #ccc;" id="resultGroup"></p>
+                <div class="result-score" id="resultScore"></div>
+                <p style="color: #ccc;" id="resultDetails"></p>
+                <p style="margin-top: 20px; color: #aaa; font-size: 0.85em;">Нәтиже Google Кестеге сақталды.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== БАЗА ВОПРОСОВ (60 вопросов) ====================
+        const QUESTION_BANK = [
+            // ----- ЛЁГКИЕ (1-20) -----
+            { id: 1, diff: 1, q: '"Автоматты басқару теориясы" пәні нені зерттейді?', opts: ['Тек электр тізбектерін жобалауды',
+                    'Басқару жүйелерін талдау және синтездеу әдістерін',
+                    'Механикалық конструкцияларды есептеуді', 'Тек жылу алмасу процестерін'
+                ], ans: 1 },
+            { id: 2, diff: 1, q: 'Кері байланыс принципі бойынша жүйе қалай жұмыс істейді?', opts: [
+                    'Шығыс сигнал мүлдем өлшенбейді',
+                    'Шығыс сигнал берілген мәнмен салыстырылып, қателік бойынша түзету енгізіледі',
+                    'Тек сыртқы орта температурасын өлшейді', 'Жүйе алдын ала жазылған сценарий бойынша ғана жұмыс істейді'
+                ], ans: 1 },
+            { id: 3, diff: 1, q: 'Статизм (statism) дегеніміз не?', opts: ['Жүйенің максималды жылдамдығы',
+                    'Жүктеме өзгерген кезде пайда болатын тұрақтанған қателік',
+                    'Өтпелі процестегі тербеліс саны', 'Лаплас операторының физикалық мағынасы'
+                ], ans: 1 },
+            { id: 4, diff: 1, q: 'Тұйықталмаған (ашық) басқару жүйесінің басты ерекшелігі қандай?', opts: [
+                    'Шығыс сигнал кіріске әсер етіп, оны түзетеді',
+                    'Жүйе жұмыс істеу барысында сыртқы кедергілерді толық өлшейді',
+                    'Шығыс сигнал мен берілген мән үздіксіз салыстырылады',
+                    'Басқару тек алдын ала берілген командалар бойынша жүреді, шығыс бақыланбайды'
+                ], ans: 3 },
+            { id: 5, diff: 1, q: 'Лаплас түрлендіруі автоматты басқару теориясында не үшін қолданылады?', opts: [
+                    'Геометриялық фигураларды салу үшін',
+                    'Дифференциалдық теңдеулерді алгебралық теңдеулерге айналдыру арқылы есептеуді жеңілдету үшін',
+                    'Сандарды бір жүйеден екінші жүйеге аудару үшін', 'Тек логарифмдік графиктер салу үшін'
+                ], ans: 1 },
+            { id: 6, diff: 1, q: 'Пропорционалды (инерциясыз) буынның беріліс функциясы қандай?', opts: ['W(s) = k / s',
+                    'W(s) = k / (Ts+1)', 'W(s) = k', 'W(s) = k·s'
+                ], ans: 2 },
+            { id: 7, diff: 1, q: 'Бірлік сатылы әсер 1(t) үшін Лаплас бейнесі неге тең?', opts: ['1 / s²', '1 / s',
+                    '1 / (s+1)', 's'
+                ], ans: 1 },
+            { id: 8, diff: 1, q: 'W(s) = k / (Ts+1) беріліс функциясы қандай буынға жатады?', opts: [
+                    'Идеалды интегралдаушы', 'Бірінші ретті апериодтық', 'Тербелмелі', 'Дифференциалдаушы'
+                ], ans: 1 },
+            { id: 9, diff: 1, q: 'Орнықты жүйе деп қандай жүйені айтамыз?', opts: [
+                    'Сыртқы әсер тоқтағаннан кейін бастапқы тепе-теңдік күйіне қайта оралатын жүйені',
+                    'Кез келген әсерге үнемі өсетін сигналмен жауап беретін жүйені',
+                    'Тек тербеліс жасай алатын жүйені', 'Шығыс сигналы нөлге тең болатын жүйені'
+                ], ans: 0 },
+            { id: 10, diff: 1, q: 'Михайлов критерийі не нәрсені бағалауға мүмкіндік береді?', opts: [
+                    'Тек тұйықталмаған жүйенің күшейту коэффициентін',
+                    'Сипаттамалық теңдеу негізінде тұйықталған жүйенің орнықтылығын',
+                    'Өтпелі процестің асыра реттеу пайызын', 'Сыртқы кедергілердің максималды амплитудасын'
+                ], ans: 1 },
+            { id: 11, diff: 1, q: 'h(t) өтпелі функциясы дегеніміз не?', opts: [
+                    'Жүйенің қысқа мерзімді импульске реакциясы',
+                    'Жүйенің бірлік сатылы әсерге (1(t)) реакциясы', 'Жүйенің гармоникалық тербелістерге реакциясы',
+                    'Жүйенің амплитудалық-жиіліктік сипаттамасы'
+                ], ans: 1 },
+            { id: 12, diff: 1, q: 'Екінші ретті апериодтық буын үшін өшу коэффициенті ζ қандай мән қабылдайды?',
+                opts: ['ζ = 0', '0 < ζ < 1', 'ζ = 0.5', 'ζ ≥ 1'], ans: 3 },
+            { id: 13, diff: 1, q: 'Қандай типтік буын "инерциясыз" деп аталады?', opts: ['Интегралдаушы',
+                    'Пропорционалды', 'Апериодтық 1-ретті', 'Консервативті'
+                ], ans: 1 },
+            { id: 14, diff: 1, q: 'Құрылымдық схемада екі буын тізбектей жалғанса, жалпы беріліс функциясы неге тең?',
+                opts: ['W = W₁ + W₂', 'W = W₁ · W₂', 'W = W₁ / (1 + W₁·W₂)', 'W = W₁ – W₂'], ans: 1 },
+            { id: 15, diff: 1, q: 'Теріс кері байланыспен қамтылған жүйенің беріліс функциясы:', opts: [
+                    'W = Wаш / (1 – Wаш)', 'W = Wаш / (1 + Wаш)', 'W = 1 + Wаш', 'W = Wаш · Wкб'
+                ], ans: 1 },
+            { id: 16, diff: 1, q: 'Сипаттамалық теңдеудің барлық коэффициенттері оң таңбалы болуы – бұл:', opts: [
+                    'Орнықтылықтың жеткілікті шарты', 'Орнықтылықтың қажетті шарты', 'Михайлов критерийінің негізі',
+                    'Найквист критерийінің салдары'
+                ], ans: 1 },
+            { id: 17, diff: 1, q: 'Гурвиц анықтауышының бірінші диагоналды миноры (Δ₁) неге тең?', opts: ['a₀',
+                'a₁', 'a₂', 'aₙ'], ans: 1 },
+            { id: 18, diff: 1, q: 'А.М. Ляпуновтың 1-теоремасы бойынша, сызықтандырылған модель орнықты болса...',
+                opts: [
+                    'Нақты жүйе әрқашан орнықсыз болады',
+                    'Нақты жүйе де орнықты болады, өйткені сызықтандыру кезінде алынған кіші мүшелер орнықтылықты өзгертпейді',
+                    'Нақты жүйе тек тербелмелі режимде жұмыс істейді',
+                    'Нақты жүйенің орнықтылығы туралы ешқандай қорытынды жасауға болмайды'
+                ], ans: 1 },
+            { id: 19, diff: 1, q: 'Таза кешігу буынының беріліс функциясы қандай?', opts: ['W(s) = e^(+τs)',
+                    'W(s) = e^(–τs)', 'W(s) = τs', 'W(s) = 1/(τs+1)'
+                ], ans: 1 },
+            { id: 20, diff: 1, q: 'АБЖ-дағы "буын" (звено) ұғымы нені білдіреді?', opts: [
+                    'Кез келген физикалық құрылғыны',
+                    'Кіріс сигналы u(t) мен шығыс сигналы y(t) арасында белгілі бір функционалдық тәуелділігі бар жүйенің құрылымдық бөлігін',
+                    'Тек электрлік кедергі элементін', 'Тек бағдарламалық кодты'
+                ], ans: 1 },
+
+            // ----- СРЕДНИЕ (21-40) -----
+            { id: 21, diff: 2,
+                q: 'W(s) = (s + 2) / (2s² + 3s + 1) жүйесі берілген. Оның сипаттамалық теңдеуі қайсысы?', opts: [
+                    's + 2 = 0', '2s² + 3s + 1 = 0', 's² + 3s + 2 = 0', '2s² + 3s + 2 = 0'
+                ], ans: 1 },
+            { id: 22, diff: 2, q: 'Бірінші ретті апериодтық буынның полюсі қайда орналасады?', opts: ['s = 1/T',
+                    's = –1/T', 's = 0', 's = –T'
+                ], ans: 1 },
+            { id: 23, diff: 2, q: 's² + 3s + 3 = 0 сипаттамалық теңдеуінің түбірлері қандай болады?', opts: [
+                    'Екі нақты теріс сан', 'Комплексті-түйіндес, нақты бөлігі теріс',
+                    'Біреуі оң, біреуі теріс нақты сан', 'Екі таза жорамал сан'
+                ], ans: 1 },
+            { id: 24, diff: 2, q: 'Консервативті буын үшін өшу коэффициенті ζ қандай мәнге ие?', opts: ['ζ > 1',
+                    '0 < ζ < 1', 'ζ = 1', 'ζ = 0'
+                ], ans: 3 },
+            { id: 25, diff: 2, q: 'Екі буын параллель жалғанған: W₁ = 2, W₂ = 3/s. Жалпы беріліс функциясы W(s):',
+                opts: ['6 / s', '2 + 3/s', '2 / (1 + 6/s)', '5'], ans: 1 },
+            { id: 26, diff: 2,
+                q: 'Михайлов критерийі бойынша, реті n=3 орнықты жүйе үшін ω=0-ден ∞-ке дейін D(jω) векторының бұрылу бұрышы:',
+                opts: ['π/2', '3π/2', 'π', '2π'], ans: 1 },
+            { id: 27, diff: 2,
+                q: 'Найквист критерийі (1-жағдай): егер тұйықталмаған жүйе орнықты болса, тұйықталған жүйе орнықты болуы үшін ашық жүйенің АФЖС-сы:',
+                opts: ['(–1, j0) нүктесін l/2 рет оң бағытта қамтуы керек',
+                    '(–1, j0) нүктесін қамтымауы керек', '(0, j1) нүктесінен өтуі керек',
+                    'Координат басын сағат тіліне қарсы қамтуы керек'
+                ], ans: 1 },
+            { id: 28, diff: 2, q: 'ЛАЖС-та пропорционалды (күшейткіш) буынның көлбеуі неше дБ/дек?', opts: [
+                    '–20 дБ/дек', '+20 дБ/дек', '0 дБ/дек', '–40 дБ/дек'
+                ], ans: 2 },
+            { id: 29, diff: 2, q: 'Асыра реттеу σ (%) қандай формуламен есептеледі?', opts: [
+                    'σ = (h_max – h_орн) / h_орн × 100%', 'σ = t_p / T × 100%',
+                    'σ = ω_p / ω_қ × 100%', 'σ = Δh / h_max × 100%'
+                ], ans: 0 },
+            { id: 30, diff: 2, q: 'Астатикалық жүйе деп қандай жүйені айтамыз?', opts: [
+                    'Тұрақтанған режимдегі қателігі нөлге тең жүйені',
+                    'Өтпелі процесінде міндетті түрде тербеліс пайда болатын жүйені',
+                    'Құрамында интегралдаушы буын жоқ жүйені', 'Орнықсыз жүйені'
+                ], ans: 0 },
+            { id: 31, diff: 2, q: 'Идеалды дифференциалдаушы буынның ЛАЖС көлбеуі қандай?', opts: ['–20 дБ/дек',
+                    '+20 дБ/дек', '0 дБ/дек', '–40 дБ/дек'
+                ], ans: 1 },
+            { id: 32, diff: 2, q: 'Раусс кестесіндегі жолдар саны немен анықталады?', opts: [
+                    'Кіріс сигналының амплитудасымен', 'Жүйе ретімен (сипаттамалық теңдеу дәрежесімен)',
+                    'Күшейту коэффициентімен', 'Уақыт тұрақтысының шамасымен'
+                ], ans: 1 },
+            { id: 33, diff: 2,
+                q: 'W(s) = K / [s·(T₁s+1)·(T₂s+1)] беріліс функциясында қанша интегралдаушы буын бар?', opts: ['0',
+                    '1', '2', '3'
+                ], ans: 1 },
+            { id: 34, diff: 2,
+                q: 'Льенар-Шипар критерийі бойынша, барлық коэффициенттер оң болғанда нені тексеру жеткілікті?',
+                opts: [
+                    'Барлық жұп индексті анықтауыштардың оң болуын (немесе барлық тақ индексті анықтауыштардың)',
+                    'Тек соңғы aₙ коэффициентін', 'Тек Δ₁ анықтауышын',
+                    'Барлық коэффициенттердің қосындысын'
+                ], ans: 0 },
+            { id: 35, diff: 2, q: 'Салмақ функциясы w(t) мен өтпелі функция h(t) арасындағы байланыс қандай?', opts: [
+                    'w(t) = ∫ h(t) dt', 'w(t) = dh(t)/dt', 'w(t) = h(t) · t', 'w(t) = h(t) + t'
+                ], ans: 1 },
+            { id: 36, diff: 2, q: 'Тербелмелі буынның беріліс функциясындағы T параметрі нені сипаттайды?', opts: [
+                    'Күшейту коэффициентін', 'Уақыт тұрақтысын (инерцияны)', 'Өшу декрементін', 'Кешігу уақытын'
+                ], ans: 1 },
+            { id: 37, diff: 2, q: 'Амплитудалық-фазалық жиіліктік сипаттама (АФЖС) дегеніміз не?', opts: [
+                    'Амплитуданың жиілікке тәуелділік графигі',
+                    'W(jω) векторының комплекс жазықтықта ω 0-ден ∞-ке дейін өзгергенде сызатын годографы',
+                    'Логарифмдік амплитудалық сипаттама', 'Фазаның уақытқа тәуелділігі'
+                ], ans: 1 },
+            { id: 38, diff: 2, q: 'Гурвиц критерийі бойынша 3-ретті жүйе үшін Δ₂ шарты:', opts: [
+                    'a₁a₂ – a₀a₃ > 0', 'a₁a₂ > 0', 'a₀a₃ > 0', 'a₁ + a₂ – a₃ > 0'
+                ], ans: 0 },
+            { id: 39, diff: 2, q: 's = jω алмастыруы қандай сипаттамаларды алу үшін қолданылады?', opts: [
+                    'Уақыттық сипаттамалар', 'Жиіліктік сипаттамалар', 'Статикалық сипаттамалар',
+                    'Логарифмдік декремент'
+                ], ans: 1 },
+            { id: 40, diff: 2, q: 'Реттеу уақыты t_p деп нені түсінеміз?', opts: [
+                    'Өтпелі процестің абсолютті басын',
+                    'Өтпелі қисықтың орныққан мәннен берілген Δ дәлдік дәлізіне кіріп, одан шықпайтын сәтін',
+                    'Бірінші максимумға жету уақытын', 'Жүйенің реакциясының нөлден басталу сәтін'
+                ], ans: 1 },
+
+            // ----- СЛОЖНЫЕ (41-60) -----
+            { id: 41, diff: 3,
+                q: 'Михайлов критерийі бойынша n=4 ретті орнықты жүйе үшін ω 0-ден ∞-ке өзгергенде D(jω) векторы координат басын қандай бұрышқа бұрып өтуі керек?',
+                opts: ['π (180°)', '2π (360°)', '3π/2 (270°)', '4π (720°)'], ans: 1 },
+            { id: 42, diff: 3,
+                q: 'Найквист годографы дәл (–1, j0) нүктесі арқылы өтсе, тұйықталған жүйе қандай күйде болады?',
+                opts: ['Абсолютті орнықты', 'Толық орнықсыз', 'Орнықтылық шекарасында', 'Статикалық қателік нөлге тең'
+                    ], ans: 2 },
+            { id: 43, diff: 3, q: 'Тербелмелілік көрсеткіші M дегеніміз не?', opts: [
+                    'Ашық жүйенің АЖС максимумы',
+                    'Тұйықталған жүйенің АЖС максимумының оның ω=0 кезіндегі мәніне қатынасы',
+                    'Логарифмдік амплитудалық сипаттаманың ең биік нүктесі',
+                    'Фазалық сипаттаманың ең төменгі мәні'
+                ], ans: 1 },
+            { id: 44, diff: 3, q: 'Орнықтылық дәрежесі η деп нені айтамыз?', opts: [
+                    'Сипаттамалық теңдеудің оң түбірлерінің санын',
+                    'Жорамал оське ең жақын орналасқан түбірдің нақты бөлігінің абсолюттік шамасын',
+                    'Барлық түбірлердің нақты бөліктерінің қосындысын',
+                    'aₙ₋₁ коэффициентінің aₙ коэффициентіне қатынасын'
+                ], ans: 1 },
+            { id: 45, diff: 3,
+                q: 'Интегралдаушы буын үшін L(ω) = 20lgK – 20lgω. ω = 1 рад/с болғанда L(ω) мәні неге тең?',
+                opts: ['0 дБ', '20lgK дБ', '–20lgK дБ', 'K дБ'], ans: 1 },
+            { id: 46, diff: 3,
+                q: 'Егер сипаттамалық теңдеудің бір түбірі нөлге тең болса (s₁ = 0), жүйе қандай күйде?', opts: [
+                    'Абсолютті орнықты', 'Орнықсыз', 'Орнықтылық шекарасында (астатикалық)', 'Тербелмелі режимде'
+                ], ans: 2 },
+            { id: 47, diff: 3, q: 'Бағдарламалық басқару жүйесінде берілген әсер X(t) қандай сипатта болады?', opts: [
+                    'Әрқашан тұрақты (const)', 'Алдын ала белгілі уақыт функциясы f(t)',
+                    'Кездейсоқ және болжанбайтын сигнал', 'Тек дискретті мәндер қабылдайды'
+                ], ans: 1 },
+            { id: 48, diff: 3, q: 'Сызықтандыру процесінде Тейлор қатарының қандай мүшелері ескерілмейді?', opts: [
+                    'Тек бірінші ретті туындылар', 'Екінші және одан жоғары ретті кішілік мүшелер',
+                    'Нөлінші ретті тұрақты құраушы', 'Тек үшінші ретті туындылар'
+                ], ans: 1 },
+            { id: 49, diff: 3,
+                q: 'Найквист критерийі (2-жағдай): егер тұйықталмаған жүйеде l оң түбір болса, тұйықталған жүйе орнықты болуы үшін ашық жүйенің АФЖС-сы (–1, j0) нүктесін неше рет және қалай қамтуы керек?',
+                opts: ['l рет сағат тіліне қарсы', 'l/2 рет сағат тіліне қарсы', 'Ешқашан қамтымауы керек',
+                    'l рет сағат тілімен'
+                ], ans: 1 },
+            { id: 50, diff: 3,
+                q: 'Михайлов критерийінің салдары: орнықты жүйе үшін X(ω) және Y(ω) функцияларының түбірлері қалай орналасады?',
+                opts: ['Барлығы бір нүктеде жинақталады', 'Кезектесіп орналасады (0 < ω₁ < ω₂ < ω₃ ...)',
+                    'Y(ω) түбірлері әрқашан X(ω)-дан көп', 'Тек оң жарты жазықтықта орналасады'
+                ], ans: 1 },
+            { id: 51, diff: 3,
+                q: 'W(s) = 1 / (s² + 2s + 1) беріліс функциясы қандай буынға жатады? (T₁=T₂=1, ζ=1)', opts: [
+                    'Консервативті буын', 'Екінші ретті апериодтық буын (екі бірдей апериодтық буын)',
+                    'Тербелмелі буын', 'Интегралдаушы буын'
+                ], ans: 1 },
+            { id: 52, diff: 3, q: 'Егер h_max = 1.8, h_орн = 1.2 болса, асыра реттеу σ (%) нешеге тең?', opts: [
+                    '33.3%', '50%', '60%', '150%'
+                ], ans: 1 },
+            { id: 53, diff: 3,
+                q: 'Сипаттамалық теңдеу: s³ + 4s² + 5s = 0. Жүйе қандай жағдайда? (s₁=0, s₂,₃ теріс нақты бөлікті комплекс)',
+                opts: ['Орнықты', 'Орнықсыз', 'Орнықтылық шекарасында', 'Параметрлерге тәуелді'], ans: 2 },
+            { id: 54, diff: 3,
+                q: 'Идеалды интегралдаушы буын үшін фазалық жиіліктік сипаттама φ(ω) нешеге тең?', opts: [
+                    '0°', '–90°', '+90°', '–180°'
+                ], ans: 1 },
+            { id: 55, diff: 3,
+                q: 'Найквисттің логарифмдік критерийі бойынша, егер тұйықталмаған жүйе орнықты болса, тұйықталған жүйе орнықты болуы үшін L(ω)=0 болғандағы фаза:',
+                opts: ['–180°-тан жоғары (аз теріс) болуы керек', '–180°-тан төмен болуы керек',
+                    'Дәл –90° болуы керек', '0°-тан жоғары болуы керек'
+                ], ans: 0 },
+            { id: 56, diff: 3, q: 'Изодромды буынның беріліс функциясы қандай?', opts: ['W(s) = k/s',
+                    'W(s) = k/(Ts+1)', 'W(s) = (k₁s + k₂) / (Ts)', 'W(s) = k s'
+                ], ans: 2 },
+            { id: 57, diff: 3, q: 'Тұйықталған жүйенің АЖС-де резонанстық шыңның болуы нені көрсетеді?', opts: [
+                    'Жүйенің өте жоғары жылдамдықпен жұмыс істейтінін',
+                    'Өтпелі процесте үлкен тербелістер мен асыра реттеудің пайда болатынын',
+                    'Жүйенің абсолютті орнықты екенін', 'Статикалық қателіктің толық жойылғанын'
+                ], ans: 1 },
+            { id: 58, diff: 3,
+                q: 'a₀s⁴ + a₁s³ + a₂s² + a₃s + a₄ = 0 теңдеуі үшін Гурвиц бойынша Δ₂ неге тең? (жалпы формула)',
+                opts: ['a₁a₂ – a₀a₃', 'a₁a₄ – a₀a₃', 'a₂a₃ – a₁a₄', 'a₀a₁ – a₂a₃'], ans: 0 },
+            { id: 59, diff: 3,
+                q: 'Статикалық (астатизм дәрежесі ν=0) тұйықталмаған жүйе үшін W(jω) годографы ω→0-де қай нүктеден басталады?',
+                opts: ['Координат басынан (0, 0)', '(K, 0) нүктесінен, K – күшейту коэффициенті',
+                    'Шексіздіктен', '(0, –j∞) нүктесінен'
+                ], ans: 1 },
+            { id: 60, diff: 3,
+                q: 'Таза кешігу буыны (τ) жүйенің жиіліктік сипаттамасына қалай әсер етеді?', opts: [
+                    'Амплитуданы τ есе арттырады',
+                    'Амплитуданы өзгертпей, фазаны –ωτ радианға ығыстырады',
+                    'Амплитуда мен фазаны бірдей өзгертеді', 'Тек төменгі жиіліктерде амплитуданы азайтады'
+                ], ans: 1 }
+        ];
+
+        // ==================== ЛОГИКА ПРИЛОЖЕНИЯ ====================
+        const TEST_DURATION = 40 * 60; // 40 минут в секундах
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYOUR_SCRIPT_ID_HERE/exec'; // ЗАМЕНИТЕ!
+
+        let studentData = null;
+        let selectedQuestions = [];
+        let currentQuestionIndex = 0;
+        let answers = [];
+        let timerInterval = null;
+        let timeRemaining = TEST_DURATION;
+        let testActive = false;
+        let testFinished = false;
+
+        // Перемешивание массива (Фишер-Йетс)
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        // Выбор 25 вопросов: 5 легких, 10 средних, 10 сложных
+        function selectQuestions() {
+            const easy = QUESTION_BANK.filter(q => q.diff === 1);
+            const medium = QUESTION_BANK.filter(q => q.diff === 2);
+            const hard = QUESTION_BANK.filter(q => q.diff === 3);
+
+            const selectedEasy = shuffleArray(easy).slice(0, 5);
+            const selectedMedium = shuffleArray(medium).slice(0, 10);
+            const selectedHard = shuffleArray(hard).slice(0, 10);
+
+            let combined = [...selectedEasy, ...selectedMedium, ...selectedHard];
+            return shuffleArray(combined);
+        }
+
+        function startTest() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const group = document.getElementById('groupSelect').value;
+
+            if (!fullName || !group) {
+                document.getElementById('registerError').textContent = '❗ Толық аты-жөніңізді енгізіп, топты таңдаңыз!';
+                return;
+            }
+            if (!/^[а-яӘІҢҒҮҰҚӨөғүұқәің\s]+$/i.test(fullName.replace(/\s/g, ''))) {
+                document.getElementById('registerError').textContent =
+                    '❗ Аты-жөніңізді кириллицамен (қазақша/орысша) енгізіңіз.';
+                return;
+            }
+
+            studentData = { fullName, group };
+            selectedQuestions = selectQuestions();
+            currentQuestionIndex = 0;
+            answers = new Array(25).fill(-1);
+            testActive = true;
+            testFinished = false;
+            timeRemaining = TEST_DURATION;
+
+            document.getElementById('registerScreen').classList.add('hidden');
+            document.getElementById('testScreen').classList.remove('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+
+            showQuestion();
+            startTimer();
+
+            // Защита от сворачивания/закрытия
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            window.addEventListener('blur', handleWindowBlur);
+        }
+
+        function showQuestion() {
+            if (!testActive || testFinished) return;
+            if (currentQuestionIndex >= selectedQuestions.length) {
+                finishTest();
+                return;
+            }
+
+            const q = selectedQuestions[currentQuestionIndex];
+            document.getElementById('questionProgress').textContent = `${currentQuestionIndex + 1} / 25`;
+
+            let diffBadge = '';
+            if (q.diff === 1) diffBadge = '<span class="difficulty-badge badge-easy">Жеңіл</span>';
+            else if (q.diff === 2) diffBadge = '<span class="difficulty-badge badge-medium">Орташа</span>';
+            else diffBadge = '<span class="difficulty-badge badge-hard">Күрделі</span>';
+
+            document.getElementById('questionText').innerHTML = `${currentQuestionIndex + 1}. ${q.q}`;
+            document.getElementById('difficultyBadge').innerHTML = diffBadge;
+
+            const optsContainer = document.getElementById('optionsContainer');
+            optsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+            q.opts.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = `${letters[idx]}) ${opt}`;
+                btn.addEventListener('click', () => selectAnswer(idx));
+                optsContainer.appendChild(btn);
+            });
+
+            document.getElementById('testError').textContent = '';
+        }
+
+        function selectAnswer(optionIndex) {
+            if (!testActive || testFinished) return;
+
+            answers[currentQuestionIndex] = optionIndex;
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex >= selectedQuestions.length) {
+                finishTest();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeRemaining / 60);
+            const secs = timeRemaining % 60;
+            const display = document.getElementById('timerDisplay');
+            display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            if (timeRemaining < 300) {
+                display.classList.add('warning');
+            } else {
+                display.classList.remove('warning');
+            }
+        }
+
+        function handleVisibilityChange() {
+            if (document.hidden && testActive && !testFinished) {
+                forceTerminateTest('Терезе жабылды немесе басқа қосымшаға ауыстырылды.');
+            }
+        }
+
+        function handleWindowBlur() {
+            if (testActive && !testFinished && document.hasFocus && !document.hasFocus()) {
+                // Даем небольшую задержку, возможно это случайное нажатие
+                setTimeout(() => {
+                    if (testActive && !testFinished && document.hasFocus && !document.hasFocus()) {
+                        forceTerminateTest('Терезе белсенді емес. Тест тоқтатылды.');
+                    }
+                }, 2000);
+            }
+        }
+
+        function forceTerminateTest(reason) {
+            if (!testActive || testFinished) return;
+            testActive = false;
+            testFinished = true;
+            clearInterval(timerInterval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('blur', handleWindowBlur);
+
+            alert(`❌ ${reason}\nСіздің әрекетіңіз тіркелді. Тест нәтижесі жойылды.`);
+            sendResultToSheet('TERMINATED', reason);
+            showResultScreen(0, 0, true, reason);
+        }
+
+        function finishTest() {
+            if (!testActive || testFinished) return;
+            testActive = false;
+            testFinished = true;
+            clearInterval(timerInterval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            window.removeEventListener('blur', handleWindowBlur);
+
+            let correctCount = 0;
+            for (let i = 0; i < selectedQuestions.length; i++) {
+                if (answers[i] === selectedQuestions[i].ans) correctCount++;
+            }
+
+            const totalQuestions = selectedQuestions.length;
+            sendResultToSheet('COMPLETED', `${correctCount}/${totalQuestions}`);
+            showResultScreen(correctCount, totalQuestions, false);
+        }
+
+        function showResultScreen(correct, total, terminated, reason = '') {
+            document.getElementById('testScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+
+            document.getElementById('resultName').textContent = studentData?.fullName || '—';
+            document.getElementById('resultGroup').textContent = studentData?.group || '—';
+
+            if (terminated) {
+                document.getElementById('resultScore').textContent = '🚫';
+                document.getElementById('resultDetails').textContent = reason || 'Тест мерзімінен бұрын аяқталды.';
+            } else {
+                const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+                document.getElementById('resultScore').textContent = `${correct} / ${total}`;
+                document.getElementById('resultDetails').textContent = `Пайыз: ${percent}%`;
+                document.getElementById('resultScore').style.background =
+                    percent >= 80 ?
+                    'linear-gradient(45deg, #4caf50, #8bc34a)' :
+                    percent >= 50 ?
+                    'linear-gradient(45deg, #ff9800, #ffc107)' :
+                    'linear-gradient(45deg, #f44336, #ff5722)';
+                document.getElementById('resultScore').style.webkitBackgroundClip = 'text';
+                document.getElementById('resultScore').style.webkitTextFillColor = 'transparent';
+            }
+        }
+
+        function sendResultToSheet(status, details) {
+            if (!studentData || !GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) return;
+
+            const payload = {
+                fullName: studentData.fullName,
+                group: studentData.group,
+                status: status,
+                score: details,
+                timestamp: new Date().toLocaleString('kk-KZ'),
+                questions: selectedQuestions.map((q, i) => ({
+                    id: q.id,
+                    userAnswer: answers[i] !== -1 ? answers[i] : null,
+                    correct: answers[i] === q.ans
+                }))
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(() => console.log('Результат отправлен в Google Sheets'))
+                .catch(err => console.error('Ошибка отправки:', err));
+        }
+
+        // Предотвращение обновления страницы
+        window.addEventListener('beforeunload', (e) => {
+            if (testActive && !testFinished) {
+                e.preventDefault();
+                e.returnValue = 'Сіз тестті әлі аяқтамадыңыз. Бетті жапсаңыз, тест жойылады!';
+                return e.returnValue;
+            }
+        });
+
+        // Запрет нажатия назад в браузере
+        window.addEventListener('popstate', (e) => {
+            if (testActive && !testFinished) {
+                history.pushState(null, document.title, location.href);
+                alert('⛔ Тест кезінде артқа қайтуға болмайды!');
+            }
+        });
+        history.pushState(null, document.title, location.href);
+
+        // Сброс при загрузке
+        window.addEventListener('load', () => {
+            document.getElementById('registerScreen').classList.remove('hidden');
+            document.getElementById('testScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            testActive = false;
+            testFinished = false;
+        });
+    </script>
+</body>
+</html>
