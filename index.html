@@ -547,7 +547,7 @@
 
         // ==================== ЛОГИКА ПРИЛОЖЕНИЯ ====================
         const TEST_DURATION = 40 * 60; // 40 минут в секундах
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhVEJYyFPYbiojNA5-5iws-0trcdnHhjABs9OT5Q8ipm9cRqQEOk8xMPjHrHws86ot/exec'; // ЗАМЕНИТЕ!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxn8vXUegl9sxCs6WWCC9ETCWiVyW81_SCQ8c7ewAZCXigDEDS1g75Z7brWEcMRc2yf/exec'; // ЗАМЕНИТЕ!
 
         let studentData = null;
         let selectedQuestions = [];
@@ -761,29 +761,27 @@
 function sendResultToSheet(status, details) {
   if (!studentData || GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) return;
 
-  const payload = {
-    fullName: studentData.fullName,
-    group: studentData.group,
-    status: status,
-    score: details,
-    timestamp: new Date().toLocaleString('kk-KZ'),
-    questions: selectedQuestions.map((q, i) => ({
-      id: q.id,
-      userAnswer: answers[i] !== -1 ? answers[i] : null,
-      correct: answers[i] === q.ans
-    }))
-  };
+  const answersStr = selectedQuestions.map((q, i) =>
+    `Q${q.id}:${answers[i] ?? '-'}(${answers[i] === q.ans ? '✓' : '✗'})`
+  ).join(';');
+
+  const formData = new URLSearchParams();
+  formData.append('fullName', studentData.fullName);
+  formData.append('group', studentData.group);
+  formData.append('status', status);
+  formData.append('score', details);
+  formData.append('timestamp', new Date().toLocaleString('kk-KZ'));
+  formData.append('answersStr', answersStr);
 
   fetch(GOOGLE_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString()
   })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => console.log('✅ Результат отправлен:', data))
     .catch(error => console.error('❌ Ошибка отправки:', error));
 }
-
         // Предотвращение обновления страницы
         window.addEventListener('beforeunload', (e) => {
             if (testActive && !testFinished) {
