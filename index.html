@@ -547,7 +547,7 @@
 
         // ==================== ЛОГИКА ПРИЛОЖЕНИЯ ====================
         const TEST_DURATION = 40 * 60; // 40 минут в секундах
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4VzgIciIdNdR3wQo4Bd7EPE7syaTnrmGs6-3MeLQuDGCkYM5IkexMCLyeoZqbcLHP/exec'; // ЗАМЕНИТЕ!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwhVEJYyFPYbiojNA5-5iws-0trcdnHhjABs9OT5Q8ipm9cRqQEOk8xMPjHrHws86ot/exec'; // ЗАМЕНИТЕ!
 
         let studentData = null;
         let selectedQuestions = [];
@@ -759,13 +759,7 @@
         }
 
 function sendResultToSheet(status, details) {
-  if (!studentData) return;
-
-  // Если не указан реальный URL – только логируем
-  if (GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
-    console.warn('Google Script URL не настроен. Данные не отправлены.');
-    return;
-  }
+  if (!studentData || GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) return;
 
   const payload = {
     fullName: studentData.fullName,
@@ -786,7 +780,7 @@ function sendResultToSheet(status, details) {
     body: JSON.stringify(payload)
   })
     .then(response => response.json())
-    .then(data => console.log('✅ Отправлено в таблицу:', data))
+    .then(data => console.log('✅ Результат отправлен:', data))
     .catch(error => console.error('❌ Ошибка отправки:', error));
 }
 
