@@ -547,7 +547,7 @@
 
         // ==================== ЛОГИКА ПРИЛОЖЕНИЯ ====================
         const TEST_DURATION = 40 * 60; // 40 минут в секундах
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwThZXmL8AZAo4eW5NkNYtHZ0hYzqUR4Z56CSVxZIPQM6H1Jvhp76G1ZmkI8dUTZOKE/exec'; // ЗАМЕНИТЕ!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4VzgIciIdNdR3wQo4Bd7EPE7syaTnrmGs6-3MeLQuDGCkYM5IkexMCLyeoZqbcLHP/exec'; // ЗАМЕНИТЕ!
 
         let studentData = null;
         let selectedQuestions = [];
@@ -758,31 +758,37 @@
             }
         }
 
-        function sendResultToSheet(status, details) {
-            if (!studentData || !GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) return;
+function sendResultToSheet(status, details) {
+  if (!studentData) return;
 
-            const payload = {
-                fullName: studentData.fullName,
-                group: studentData.group,
-                status: status,
-                score: details,
-                timestamp: new Date().toLocaleString('kk-KZ'),
-                questions: selectedQuestions.map((q, i) => ({
-                    id: q.id,
-                    userAnswer: answers[i] !== -1 ? answers[i] : null,
-                    correct: answers[i] === q.ans
-                }))
-            };
+  // Если не указан реальный URL – только логируем
+  if (GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
+    console.warn('Google Script URL не настроен. Данные не отправлены.');
+    return;
+  }
 
-            fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                })
-                .then(() => console.log('Результат отправлен в Google Sheets'))
-                .catch(err => console.error('Ошибка отправки:', err));
-        }
+  const payload = {
+    fullName: studentData.fullName,
+    group: studentData.group,
+    status: status,
+    score: details,
+    timestamp: new Date().toLocaleString('kk-KZ'),
+    questions: selectedQuestions.map((q, i) => ({
+      id: q.id,
+      userAnswer: answers[i] !== -1 ? answers[i] : null,
+      correct: answers[i] === q.ans
+    }))
+  };
+
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+    .then(response => response.json())
+    .then(data => console.log('✅ Отправлено в таблицу:', data))
+    .catch(error => console.error('❌ Ошибка отправки:', error));
+}
 
         // Предотвращение обновления страницы
         window.addEventListener('beforeunload', (e) => {
