@@ -3,109 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>АБЖ Тестілеу Жүйесі</title>
+    <title>TAU2201 АБЖ (дәрістер бойынша қорытынды бақылау)</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            padding: 20px; color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
         }
         .container {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 40px;
-            width: 100%; max-width: 700px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
         h1 {
-            text-align: center; margin-bottom: 30px; font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: 600;
             background: linear-gradient(45deg, #f3a183, #e0c3fc);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        h2 { margin-bottom: 20px; color: #e0c3fc; font-size: 1.3em; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; color: #ddd; }
-        input, select {
-            width: 100%; padding: 14px 18px; border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.08);
-            color: #fff; font-size: 1em; outline: none;
-            transition: all 0.3s; font-family: inherit;
+        h2 {
+            margin-bottom: 20px;
+            color: #e0c3fc;
+            font-size: 1.3em;
         }
-        input:focus, select:focus {
-            border-color: #f3a183; box-shadow: 0 0 15px rgba(243,161,131,0.3);
-            background: rgba(255,255,255,0.15);
+        .form-group {
+            margin-bottom: 20px;
         }
-        .btn {
-            width: 100%; padding: 15px; border: none; border-radius: 12px;
-            font-size: 1.1em; font-weight: 600; cursor: pointer;
-            transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #bbb;
+            font-size: 1em;
+        }
+        input,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
             font-family: inherit;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-            color: #fff; box-shadow: 0 8px 20px rgba(76,175,80,0.3);
+        input:focus,
+        select:focus {
+            border-color: #f3a183;
+            box-shadow: 0 0 15px rgba(243, 161, 131, 0.3);
+            background: rgba(255, 255, 255, 0.15);
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(76,175,80,0.5); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        select option {
+            background: #1a2a3a;
+            color: #fff;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: inherit;
+        }
+	.btn-primary {
+    	background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+   	 color: #fff;
+    	box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+	}
+	.btn-primary:hover {
+    	transform: translateY(-2px);
+    	box-shadow: 0 12px 30px rgba(76, 175, 80, 0.5);
+	}
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
         .test-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; flex-wrap: wrap; gap: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .timer {
-            background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 30px;
-            font-size: 1.2em; font-weight: bold; color: #f3a183;
-            border: 2px solid #f3a183; min-width: 100px; text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #f3a183;
+            border: 2px solid #f3a183;
+            min-width: 100px;
+            text-align: center;
         }
-        .timer.warning { color: #ff6b6b; border-color: #ff6b6b; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        .question-timer {
-            background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 20px;
-            font-size: 1em; font-weight: bold; color: #f3a183;
-            border: 2px solid #f3a183; min-width: 80px; text-align: center;
+        .timer.warning {
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+            animation: pulse 1s infinite;
         }
-        .progress { color: #ccc; font-size: 0.95em; }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        .progress {
+            color: #ccc;
+            font-size: 0.95em;
+        }
         .question-block {
-            background: rgba(255,255,255,0.05); border-radius: 15px;
-            padding: 25px; margin-bottom: 20px; border-left: 4px solid #f3a183;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f3a183;
         }
-        .question-text { font-size: 1.15em; margin-bottom: 20px; line-height: 1.6; }
-        .options { display: flex; flex-direction: column; gap: 12px; }
+        .question-text {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #fff;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
         .option-btn {
-            text-align: left; padding: 15px 20px;
-            background: rgba(255,255,255,0.06);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 10px; color: #ddd; cursor: pointer;
-            transition: all 0.25s; font-size: 1em; width: 100%;
+            text-align: left;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 1em;
+            font-family: inherit;
+            width: 100%;
         }
-        .option-btn:hover { background: rgba(255,255,255,0.15); border-color: #f3a183; transform: translateX(5px); }
-        .result-box { text-align: center; padding: 30px; }
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #f3a183;
+            transform: translateX(5px);
+        }
+        .result-box {
+            text-align: center;
+            padding: 30px;
+        }
         .result-score {
-            font-size: 4em; font-weight: bold;
+            font-size: 4em;
+            font-weight: bold;
             background: linear-gradient(45deg, #f3a183, #e0c3fc);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 20px 0;
         }
-        .error { color: #ff6b6b; text-align: center; margin-top: 10px; }
-        .hidden { display: none !important; }
-        .difficulty-badge {
-            display: inline-block; padding: 4px 12px; border-radius: 20px;
-            font-size: 0.75em; font-weight: 600; margin-left: 10px; text-transform: uppercase;
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
         }
-        .badge-easy { background: #4caf50; color: #fff; }
-        .badge-medium { background: #ff9800; color: #fff; }
-        .badge-hard { background: #f44336; color: #fff; }
+        .hidden {
+            display: none !important;
+        }
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: uppercase;
+        }
+        .badge-easy {
+            background: #4caf50;
+            color: #fff;
+        }
+        .badge-medium {
+            background: #ff9800;
+            color: #fff;
+        }
+        .badge-hard {
+            background: #f44336;
+            color: #fff;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container" id="mainContainer">
         <!-- Регистрация -->
         <div id="registerScreen">
-            <h1>📚 TAU2201 Автоматты басқару теориясы (дәрістер бойынша қорытынды бақылау)у</h1>
+            <h1>📚 TAU2201 Автоматты басқару теориясы (дәрістер бойынша қорытынды бақылау)</h1>
             <div class="form-group">
                 <label for="fullName">Толық аты-жөніңіз (ФИО):</label>
                 <input type="text" id="fullName" placeholder="Мысалы: Ахметов Асқар Маратұлы">
