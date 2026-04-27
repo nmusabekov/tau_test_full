@@ -388,15 +388,35 @@
             return a;
         }
 
-        function selectQuestions() {
-            const easy = QUESTION_BANK.filter(q => q.diff === 1);
-            const medium = QUESTION_BANK.filter(q => q.diff === 2);
-            const hard = QUESTION_BANK.filter(q => q.diff === 3);
-            const selEasy = shuffleArray(easy).slice(0, 5);
-            const selMedium = shuffleArray(medium).slice(0, 10);
-            const selHard = shuffleArray(hard).slice(0, 10);
-            return shuffleArray([...selEasy, ...selMedium, ...selHard]);
-        }
+function shuffleQuestion(q) {
+    // Создаём массив пар [индекс, текст]
+    const indexedOpts = q.opts.map((text, idx) => ({ idx, text }));
+    // Перемешиваем
+    for (let i = indexedOpts.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [indexedOpts[i], indexedOpts[j]] = [indexedOpts[j], indexedOpts[i]];
+    }
+    // Определяем новый индекс правильного ответа
+    const newAns = indexedOpts.findIndex(item => item.idx === q.ans);
+    return {
+        ...q,
+        opts: indexedOpts.map(item => item.text),
+        ans: newAns
+    };
+}
+
+function selectQuestions() {
+    const easy = QUESTION_BANK.filter(q => q.diff === 1);
+    const medium = QUESTION_BANK.filter(q => q.diff === 2);
+    const hard = QUESTION_BANK.filter(q => q.diff === 3);
+    
+    const selEasy = shuffleArray(easy).slice(0, 5);
+    const selMedium = shuffleArray(medium).slice(0, 10);
+    const selHard = shuffleArray(hard).slice(0, 10);
+    
+    // Перемешиваем варианты внутри каждого вопроса
+    return shuffleArray([...selEasy, ...selMedium, ...selHard]).map(shuffleQuestion);
+}
 
         async function startTest() {
             const fullName = document.getElementById('fullName').value.trim();
